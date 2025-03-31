@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Lab Assignment</title>
+    <style>
+        .completed { text-decoration: line-through; }
+        #hoverDiv { width: 100px; height: 100px; border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Lab Assignment</h1>
+    
+    <h2>Form Validation</h2>
+    <form onsubmit="return validateForm()">
+        Email: <input type="text" id="email"><br>
+        Password: <input type="password" id="password"><br>
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+    
+    <h2>Pop-up Boxes</h2>
+    <button id="deleteBtn">Delete Item</button>
+    
+    <h2>Event Handling & DOM Manipulation</h2>
+    <button id="changeTextBtn">Change Text</button>
+    <p id="text">Original Text</p>
+    <div id="hoverDiv"></div>
+    
+    <h2>Current Date & Random Number</h2>
+    <p id="showDate"></p>
+    <p id="randomNumber"></p>
+    
+    <h2>Fetch Weather Data</h2>
+    <button onclick="fetchWeather()">Get Weather</button>
+    <p id="weather"></p>
+    
+    <h2>To-Do List</h2>
+    <input type="text" id="taskInput">
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+    
+    <h2>Simple Chatbot</h2>
+    <input type="text" id="chatInput">
+    <button onclick="chatbotResponse()">Send</button>
+    <p id="chatOutput"></p>
+    
+    <script>
+        // JavaScript Implementation
+
+        // Variables, Functions, Conditions, and Loops
+        const userName = "John Doe";
+        let age = 25;
+        var country = "USA";
+
+        function bmiCalculator(weight, height) {
+            return (weight / (height * height)).toFixed(2);
+        }
+
+        function temperatureConverter(celsius) {
+            return (celsius * 9/5) + 32;
+        }
+
+        function validateAge(age) {
+            return age >= 18 ? "You are an adult." : "You are a minor.";
+        }
+
+        for (let i = 1; i <= 5; i++) {
+            console.log(`Number: ${i}`);
+        }
+
+        // Pop-up Boxes
+        document.getElementById("submitBtn").addEventListener("click", function() {
+            alert("Form submitted successfully!");
+        });
+
+        document.getElementById("deleteBtn").addEventListener("click", function() {
+            if (confirm("Are you sure you want to delete this item?")) {
+                alert("Item deleted.");
+            }
+        });
+
+        // Event Handling & DOM Manipulation
+        document.getElementById("changeTextBtn").addEventListener("click", function() {
+            document.getElementById("text").innerText = "Text changed!";
+        });
+
+        document.getElementById("hoverDiv").addEventListener("mouseover", function() {
+            this.style.backgroundColor = "blue";
+        });
+        
+        document.getElementById("hoverDiv").addEventListener("mouseout", function() {
+            this.style.backgroundColor = "white";
+        });
+
+        // Form Validation
+        function validateForm() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            
+            if (!emailRegex.test(email)) {
+                alert("Invalid email format");
+                return false;
+            }
+            if (!passwordRegex.test(password)) {
+                alert("Password must contain uppercase, lowercase, number, and special character");
+                return false;
+            }
+            return true;
+        }
+
+        // JavaScript Standard Objects & AJAX
+        document.getElementById("showDate").innerText = new Date().toLocaleString();
+        document.getElementById("randomNumber").innerText = Math.floor(Math.random() * 100);
+
+        function fetchWeather() {
+            fetch('https://api.openweathermap.org/data/2.5/weather?q=London&appid=your_api_key')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("weather").innerText = `Temperature: ${data.main.temp}`;
+            })
+            .catch(error => console.error("Error fetching weather data", error));
+        }
+
+        // To-Do List App
+        function addTask() {
+            let task = document.getElementById("taskInput").value;
+            let li = document.createElement("li");
+            li.innerText = task;
+            li.addEventListener("click", () => li.classList.toggle("completed"));
+            document.getElementById("taskList").appendChild(li);
+        }
+
+        // Simple Chatbot
+        function chatbotResponse() {
+            let userMessage = document.getElementById("chatInput").value.toLowerCase();
+            let response;
+            switch(userMessage) {
+                case "hello":
+                    response = "Hi there!";
+                    break;
+                case "how are you?":
+                    response = "I'm just a bot, but I'm doing great!";
+                    break;
+                default:
+                    response = "I don't understand that.";
+            }
+            document.getElementById("chatOutput").innerText = response;
+        }
+    </script>
+</body>
+</html>
